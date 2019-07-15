@@ -32,7 +32,7 @@ public class EjemploMatrizDispersa {
     public static void main(String[] args) {
         System.out.println("Programa para manejo de matriz en memoria");
         MatrizEnTripleta miMatriz = MatrizEnTripleta.contruirMatrizEnTripletaDesdePantalla();
-        miMatriz.MostrarMatrizEnTripletaPorPantallaTexto();
+        miMatriz.mostrarMatrizEnTripletaPorPantallaTexto();
     }
 
 }

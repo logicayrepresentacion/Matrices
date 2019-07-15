@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Carlos Alejandro Escobar Marulanda ealejandro101@gmail.com
+ * Copyright 2019 Carlos Alejandro Escobar Marulanda
  * Permission is hereby granted, free of charge, to any person 
  * obtaining a copy of this software and associated documentation 
  * files (the "Software"), to deal in the Software without 
@@ -20,24 +20,30 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
  * OTHER DEALINGS IN THE SOFTWARE.
  */
-package matriz.util;
+package matriz.listaligadaforma1;
 
+import java.util.Scanner;
 
-public class NodoCabeza extends NodoDoble{
+/**
+ *
+ * @author Usuario
+ */
+public class Ejemplo2MatrizListaLigadaForma1 {
 
-    NodoCabeza liga;
-    
-    public NodoCabeza(Tripleta t) {
-        super(t);
+    private static Scanner sc;
+
+    public static void main(String[] args) {
+        sc = new Scanner(System.in);
+
+        System.out.println("Ingrese las filas:");
+        int f = sc.nextInt();
+        System.out.println("Ingrese las columnas:");
+        int c = sc.nextInt();
+
+        // Creo el objeto matriz
+        MatrizEnListaLigadaForma1 matriz = new MatrizEnListaLigadaForma1(f, c);
+
+        matriz.mostrarMatrizEnTripletaPorPantallaTexto();
+
     }
-
-    public NodoCabeza getLiga() {
-        return liga;
-    }
-
-    public void setLiga(NodoCabeza liga) {
-        this.liga = liga;
-    }
-
-    
 }

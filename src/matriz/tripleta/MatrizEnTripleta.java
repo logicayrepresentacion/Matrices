@@ -101,7 +101,7 @@ public class MatrizEnTripleta {
      * encabezados de columna y filas
      *
      */
-    public void MostrarMatrizEnTripletaPorPantallaTexto() {
+    public void mostrarMatrizEnTripletaPorPantallaTexto() {
         // Obtengo la configuración de la matriz, fr y cr y la cantidadValores
         Tripleta configuracion = this.tripletas[0];
         int fr = configuracion.getF();

@@ -27,7 +27,6 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 import matriz.util.Tripleta;
 
-
 /**
  *
  * @author Alejandro Escobar
@@ -67,10 +66,10 @@ public class EjemploMatrizListaLigadaForma1 {
         }
         return t;
     }
-    
+
     private static Tripleta ingresarTripletaPorArchivo(String fileName) throws FileNotFoundException {
         System.out.println("Abriendo el archivo");
-        Scanner entrada = new Scanner( new File(fileName));
+        Scanner entrada = new Scanner(new File(fileName));
         System.out.println("Leyendo primera linea de configuración de la matriz");
         String datos[];
         datos = entrada.nextLine().split(",");
@@ -78,18 +77,17 @@ public class EjemploMatrizListaLigadaForma1 {
         int c = Integer.valueOf(datos[1]);
 
         Tripleta t = null;
-        
-        for( int i = 1; i<=f; i++){
+
+        for (int i = 1; i <= f; i++) {
             datos = entrada.nextLine().split(",");
-            for(int j = 1; j<=c && datos.length >= j; j++){
-                int v = Integer.valueOf(datos[j-1]);
+            for (int j = 1; j <= c && datos.length >= j; j++) {
+                int v = Integer.valueOf(datos[j - 1]);
                 t = new Tripleta(i, j, v);
             }
         }
-        
-      //  int f = Integer.valueOf(datos[0]);
-      //  int c = Integer.valueOf(datos[1]);
-        
+
+        //  int f = Integer.valueOf(datos[0]);
+        //  int c = Integer.valueOf(datos[1]);
         /*if (!(f == 0 || c == 0 || v == 0)) {
             
         }*/
@@ -97,6 +95,30 @@ public class EjemploMatrizListaLigadaForma1 {
     }
 
     private static void mostrarMatriz(MatrizEnListaLigadaForma1 matriz) {
-        matriz.mostrar();
+        matriz.mostrarMatrizEnTripletaPorPantallaTexto();
     }
+
+    public static MatrizEnListaLigadaForma1 crearMatrizDesdeArchivo(String fname) throws FileNotFoundException {
+        Scanner s = new Scanner(new File(fname));
+        String lineaConfiguracion = s.nextLine();
+        String[] configuracion = lineaConfiguracion.split(" ");
+        int filas = Integer.parseInt(configuracion[0]);
+        int columnas = Integer.parseInt(configuracion[1]);
+        MatrizEnListaLigadaForma1 mellf = new MatrizEnListaLigadaForma1(filas, columnas);
+
+        for (int i = 0; i < filas; i++) {
+            String lineaFila = s.nextLine();
+            for (int j = 0; j < columnas; j++) {
+                int f = i + 1;
+                int c = j + 1;
+                int v = Integer.parseInt("" + lineaFila.charAt(j));
+                if (v == 0) {
+                    mellf.insertar(new Tripleta(f, c, v));
+                }
+            }
+        }
+        return mellf;
+
+    }
+
 }
