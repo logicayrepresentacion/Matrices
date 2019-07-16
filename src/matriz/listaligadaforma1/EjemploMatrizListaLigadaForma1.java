@@ -26,6 +26,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 import matriz.util.Tripleta;
+import matriz.util.MatrizTexto;
 
 /**
  *
@@ -46,7 +47,7 @@ public class EjemploMatrizListaLigadaForma1 {
         // Creo el objeto matriz
         MatrizEnListaLigadaForma1 matriz = new MatrizEnListaLigadaForma1(f, c);
         Tripleta t;
-        while ((t = ingresarTripletaPorPantalla()) != null) {
+        while ((t = MatrizTexto.ingresarTripletaPorPantalla()) != null) {
             matriz.insertar(t);
         }
 
@@ -54,18 +55,7 @@ public class EjemploMatrizListaLigadaForma1 {
 
     }
 
-    private static Tripleta ingresarTripletaPorPantalla() {
-        System.out.println("Ingrese la tripleta separada por (coma ,) [ Ejemplo: 2,3,5] :");
-        String datos[] = sc.next().split(",");
-        Tripleta t = null;
-        int f = Integer.valueOf(datos[0]);
-        int c = Integer.valueOf(datos[1]);
-        int v = Integer.valueOf(datos[2]);
-        if (!(f == 0 || c == 0 || v == 0)) {
-            t = new Tripleta(f, c, v);
-        }
-        return t;
-    }
+
 
     private static Tripleta ingresarTripletaPorArchivo(String fileName) throws FileNotFoundException {
         System.out.println("Abriendo el archivo");

@@ -23,13 +23,14 @@
 package matriz.listaligadaforma2;
 
 
-public class EjemploMatrizLLF2 {
+public class Ejemplo1MatrizListaLigadaForma2 {
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         MatrizEnListaLigadaForma2 forma2 = MatrizEnListaLigadaForma2.entregarMatrizRelacion();
+        forma2.mostrarMatrizEnTripletaPorPantallaTexto();
     }
     
 }

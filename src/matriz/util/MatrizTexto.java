@@ -22,10 +22,11 @@
  */
 package matriz.util;
 
+import java.util.Scanner;
 
 public class MatrizTexto {
 
-    public static final String MATRIZTEXTO = "00101000000000000001000\n"
+    public static final String MATRIZTEXTO2 = "00101000000000000001000\n"
             + "00001000000000000100011\n"
             + "00101010000000000100010\n"
             + "01001000000000000011111\n"
@@ -255,7 +256,28 @@ public class MatrizTexto {
             + "00001100000110001000100\n"
             + "01000000000000000000001\n"
             + "10000000000100010001100\n";
-    
 
+    public static final String MATRIZTEXTO = "00101000000000000001000\n"
+            + "00001000000000000100011\n"
+            + "00101010000000000100010\n"
+            + "01001000000000000011111\n"
+            + "01101000000000000111111\n"
+            + "00101010000000000110101\n"
+            + "00001000000000000101101\n";
 
+    public static Tripleta ingresarTripletaPorPantalla() {
+        Scanner sc;
+        sc = new Scanner(System.in);
+
+        System.out.println("Ingrese la tripleta separada por (coma ,) [ Ejemplo: 2,3,5] :");
+        String datos[] = sc.next().split(",");
+        Tripleta t = null;
+        int f = Integer.valueOf(datos[0]);
+        int c = Integer.valueOf(datos[1]);
+        int v = Integer.valueOf(datos[2]);
+        if (!(f == 0 || c == 0 || v == 0)) {
+            t = new Tripleta(f, c, v);
+        }
+        return t;
+    }
 }

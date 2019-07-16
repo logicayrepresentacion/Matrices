@@ -26,64 +26,98 @@ import static matriz.Matriz.MATRIZTEXTO;
 import matriz.util.NodoDoble;
 import matriz.util.Tripleta;
 
-
 public class MatrizEnListaLigadaForma2 {
 
-    NodoDoble conf; // en el libro se llama mat
+    NodoDoble nodoConfiguracion; // en el libro se llama mat
 
-    public MatrizEnListaLigadaForma2(int f, int c) {
-        Tripleta t = new Tripleta(f, c, 0);
-        conf = new NodoDoble(t);
+    public MatrizEnListaLigadaForma2(int numeroFilas, int numeroColumnas) {
+        construirNodosCabeza(numeroFilas, numeroColumnas);
+    }
+
+    /**
+     * Métdo que construye el nodo configuración y nodo cabeza
+     *
+     * @param numeroFilas
+     * @param numeroColumnas
+     */
+    private void construirNodosCabeza(int numeroFilas, int numeroColumnas) {
+        Tripleta t = new Tripleta(numeroFilas, numeroColumnas, 0);
+        nodoConfiguracion = new NodoDoble(t);
 
         //Creo el Nodo cabeza y lo configuro para que sea lista ligada circular
         NodoDoble cabeza = new NodoDoble(null);
+        // Referencia circular por la liga filas y la liga columnas
         cabeza.setLigaC(cabeza);
         cabeza.setLigaF(cabeza);
 
         // conecto con el nodo de configuración
-        conf.setLigaC(cabeza);
-        conf.setLigaF(cabeza);
-
+        nodoConfiguracion.setLigaC(cabeza);
+        nodoConfiguracion.setLigaF(cabeza);
     }
 
+    /**
+     * Método para ingresar los datos de un nuevo registro e insertarlos en la
+     * matriz
+     *
+     * @param fila fila donde se encuentra el dato
+     * @param columna columnas donde se encuentra el dato
+     * @param valor valor
+     */
+    public void insertar(int fila, int columna, int valor) {
+        Tripleta nuevoTripletaRegistro = new Tripleta(fila, columna, valor);
+        insertar(nuevoTripletaRegistro);
+    }
+
+    /**
+     * Método para ingresar los datos de un nuevo registro e insertarlos en la
+     * matriz
+     *
+     * @param t
+     */
     public void insertar(Tripleta t) {
-        System.out.print("  inicio insertar ");
         NodoDoble nuevoNodo = new NodoDoble(t);
         conectarFilas(nuevoNodo);
         conectarColumnas(nuevoNodo);
-        int c = (Integer) conf.getT().getV();
-        conf.getT().setV(c++);
-        System.out.println("  fin insertar ");
+        int c = (Integer) nodoConfiguracion.getT().getV();
+        nodoConfiguracion.getT().setV(c++);
     }
 
+    /**
+     * Método que ingresa un nodo recorriendo la lista de las filas
+     *
+     * @param nuevoNodo
+     */
     private void conectarFilas(NodoDoble nuevoNodo) {
-        System.out.print(" - conectar Columnas - ");
         // datos para la comparación
-        int fNuevoNodo = nuevoNodo.getT().getF();
-        int cNuevoNodo = nuevoNodo.getT().getC();
+        int filaNuevoNodo = nuevoNodo.getT().getF();
+        int columnaNuevoNodo = nuevoNodo.getT().getC();
 
         // nodos para el recorrido
         NodoDoble cabeza = getCabeza();
         NodoDoble ultimo = cabeza;
-        NodoDoble r = cabeza.getLigaF();
+        NodoDoble nodoRecorrido = cabeza.getLigaF();
 
-        while (r != cabeza && r.getT().getF() < fNuevoNodo) {
-            ultimo = r;
-            r = r.getLigaF();
+        // Permite posicionar el nodoRecorrido en la fila correcta para ingresar 
+        while (nodoRecorrido != cabeza && nodoRecorrido.getT().getF() < filaNuevoNodo) {
+            ultimo = nodoRecorrido;
+            nodoRecorrido = nodoRecorrido.getLigaF();
         }
 
-        while (r != cabeza && r.getT().getF() == fNuevoNodo && r.getT().getC() < cNuevoNodo) {
-            ultimo = r;
-            r = r.getLigaF();
+        while (nodoRecorrido != cabeza && nodoRecorrido.getT().getF() == filaNuevoNodo && nodoRecorrido.getT().getC() < columnaNuevoNodo) {
+            ultimo = nodoRecorrido;
+            nodoRecorrido = nodoRecorrido.getLigaF();
         }
 
         ultimo.setLigaF(nuevoNodo);
-        nuevoNodo.setLigaF(r);
-
+        nuevoNodo.setLigaF(nodoRecorrido);
     }
 
+    /**
+     * Método que ingresa un nodo recorriendo la lista de las columnas
+     *
+     * @param nuevoNodo
+     */
     private void conectarColumnas(NodoDoble nuevoNodo) {
-        System.out.print(" - conectar Columnas - ");
         // datos para la comparación
         int fNuevoNodo = nuevoNodo.getT().getF();
         int cNuevoNodo = nuevoNodo.getT().getC();
@@ -109,7 +143,7 @@ public class MatrizEnListaLigadaForma2 {
     }
 
     private NodoDoble getCabeza() {
-        return conf.getLigaC();
+        return nodoConfiguracion.getLigaC();
     }
 
     public static MatrizEnListaLigadaForma2 entregarMatrizRelacion() {
@@ -117,8 +151,6 @@ public class MatrizEnListaLigadaForma2 {
         String[] filas = MATRIZTEXTO.split("\n");
         int cpc = filas[0].length();
         int cln = filas.length;
-        System.out.println("Filas " + cln);
-        System.out.println("Columnas " + cpc);
 
         MatrizEnListaLigadaForma2 matrizEnListaLigadaForma2 = new MatrizEnListaLigadaForma2(cln, cpc);
 
@@ -134,7 +166,6 @@ public class MatrizEnListaLigadaForma2 {
                 case '0':
                     int v = Integer.parseInt(x + "");
                     if (v != 0) {
-                        System.out.println("Adicionando valor en [" + i + "," + j + "]");
                         matrizEnListaLigadaForma2.insertar(new Tripleta(i, j, v));
                     }
                     j++;
@@ -145,6 +176,54 @@ public class MatrizEnListaLigadaForma2 {
         }
 
         return matrizEnListaLigadaForma2;
+    }
+
+    void mostrarMatrizEnTripletaPorPantallaTexto() {
+        // Obtengo la configuración de la matriz, fr y cr y la cantidadValores
+        Tripleta configuracion = nodoConfiguracion.getT();
+        int fr = configuracion.getF();
+        int cr = configuracion.getC();
+        // Imprimir una línea con encabezado de las columnas
+        System.out.print("\t");
+        for (int i = 1; i <= cr; i++) {
+            System.out.print(i + "\t");
+        }
+        System.out.println("");
+
+        NodoDoble nodoCabeza = nodoConfiguracion.getLigaF();
+        NodoDoble nodoRecorrido = nodoCabeza.getLigaF();
+        // Recorrido por una matriz virtual m x n
+        for (int fv = 1; fv <= fr; fv++) {
+            System.out.print(fv + "\t");
+            for (int cv = 1; cv <= cr; cv++) {
+                if (nodoRecorrido != null && nodoRecorrido != nodoCabeza) {
+                    Tripleta triMo = nodoRecorrido.getT();
+                    int ft = triMo.getF();
+                    int ct = triMo.getC();
+                    if (fv == ft) {
+                        if (cv < ct) {
+                            System.out.print("0\t");
+                        } else if (cv == ct) {
+                            Object vt = triMo.getV();
+                            if (vt != null) {
+                                System.out.print(vt + "\t");
+                            } else {
+                                System.out.print("ERROR x COLUMNAS!!!!");
+                            }
+                            nodoRecorrido = nodoRecorrido.getLigaF();
+                        } else {
+                            System.out.print("ERROR x COLUMNAS se paso!!!!");
+                        }
+                    } else {
+                        System.out.print("0\t");
+                    }
+                } else {
+                    System.out.print("0\t");
+                }
+            }
+            System.out.println("");
+        }
+
     }
 
 }
