@@ -25,23 +25,69 @@ package matriz.tripleta;
 import matriz.util.Tripleta;
 import java.util.Scanner;
 
-
 public class MatrizEnTripleta {
 
     protected Tripleta[] tripletas;
 
     /**
-     * Construye una matriz en tripleta vacia, con un tamaño de arreglo del peor
-     * caso y este es que la todas las posiciones esten llenas en tamaño del
-     * arreglo es de f x c + 2 f x c representa los datos de la matriz posición
-     * 0 es la tripleta de configuración ultima posición se deja reservada para
-     * operaciones.
+     * Construye una matriz en tripleta vacia, con un tamaño de arreglo del
+     * unico caso y este es que la todas las posiciones esten llenas con cero
      *
      * @param f
      * @param c
      */
     public MatrizEnTripleta(int f, int c) {
-        this.tripletas = new Tripleta[f * c + 2];
+        this.tripletas = new Tripleta[1];
+        Tripleta configuracion = new Tripleta(f, c, (int) 0);
+        tripletas[0] = configuracion;
+    }
+
+    public void setCelda(int filaDestino, int columnaDestino, double datoDestino) {
+        // ToDo - Asumo que i y j estan dentro de los limites permitos
+        Tripleta configuracion = tripletas[0];
+        int cantidadDatos = (int) configuracion.getV();
+        Tripleta celdaDestino = null;
+        int posicionInsertar = cantidadDatos + 1;
+        for (int r = 1; cantidadDatos >= r; r++) {
+            Tripleta tripletaRecorrido = tripletas[r];
+            int filaRecorrido = tripletaRecorrido.getF();
+            if (filaDestino > filaRecorrido) {
+                // No hago nada
+            } else if (filaDestino == filaRecorrido) {
+                int columnaRecorrido = tripletaRecorrido.getC();
+                if (columnaDestino > columnaRecorrido) {
+                    // No hago nada  
+                } else if (columnaDestino == columnaRecorrido) {
+                    celdaDestino = tripletaRecorrido;
+                } else {
+                    posicionInsertar = r;
+                }
+            } else {
+                posicionInsertar = r;
+            }
+        }
+
+        /**
+         * Valido si encontre la celda en el arreglo
+         */
+        if (celdaDestino == null) {
+            celdaDestino = new Tripleta(filaDestino, columnaDestino, datoDestino);
+            Tripleta[] nuevasTripletas = new Tripleta[cantidadDatos + 1 + 1];
+            configuracion.setV(cantidadDatos + 1);
+            for (int i = 0; i < nuevasTripletas.length; i++) {
+                if (i < posicionInsertar) {
+                    nuevasTripletas[i] = tripletas[i];
+                } else if (i == posicionInsertar) {
+                    nuevasTripletas[i] = celdaDestino;
+                } else {
+                    nuevasTripletas[i] = tripletas[i - 1];
+                }
+            }
+            tripletas = nuevasTripletas;
+        } else {
+            celdaDestino.setV(datoDestino);
+        }
+
     }
 
     /**
@@ -96,52 +142,54 @@ public class MatrizEnTripleta {
         tripletas[cv] = t;
     }
 
-    /**
-     * Método para imprimir una MatrizEnTripleta por pantalla tipo texto, con
-     * encabezados de columna y filas
-     *
-     */
-    public void mostrarMatrizEnTripletaPorPantallaTexto() {
+    @Override
+    public String toString() {
+        StringBuilder cadena = new StringBuilder();
         // Obtengo la configuración de la matriz, fr y cr y la cantidadValores
         Tripleta configuracion = this.tripletas[0];
-        int fr = configuracion.getF();
-        int cr = configuracion.getC();
-        int vr = (Integer) configuracion.getV();
+        int cantidadFilasMatriz = configuracion.getF();
+        int cantidadColumnasMatriz = configuracion.getC();
+        int valoresDiferentesCero = (Integer) configuracion.getV();
         // Imprimir una línea con encabezado de las columnas
-        System.out.print("\t");
-        for (int i = 1; i <= cr; i++) {
-            System.out.print(i + "\t");
+        cadena.append("\t");
+        for (int i = 1; i <= cantidadColumnasMatriz; i++) {
+            cadena.append(i + "\t");
         }
 
-        System.out.println("");
+        cadena.append("\n");
         int posicionArreglo = 1;
 
         // Recorrido por una matriz virtual m x n
-        for (int fv = 1; fv <= fr; fv++) {
-            System.out.print(fv + "\t");
-            for (int cv = 1; cv <= cr; cv++) {
-                if (posicionArreglo <= vr) {
-                    Tripleta triMo = tripletas[posicionArreglo];
-                    int ft = triMo.getF();
-                    int ct = triMo.getC();
-                    if (fv == ft) {
-                        if (cv == ct) {
-                            Object vt = triMo.getV();
-                            if (vt != null) {
-                                System.out.print(vt + "\t");
+        for (int filasVirtuales = 1; filasVirtuales <= cantidadFilasMatriz; filasVirtuales++) {
+            cadena.append(filasVirtuales + "\t");
+            for (int columnasVirtuales = 1; columnasVirtuales <= cantidadColumnasMatriz; columnasVirtuales++) {
+                if (posicionArreglo <= valoresDiferentesCero) {
+                    // Estoy en una posicion valida en el arreglo
+                    Tripleta posibleTripletaMostrar = tripletas[posicionArreglo];
+                    int filaCeldaMostrar = posibleTripletaMostrar.getF();
+                    int columnaCeldaMostrar = posibleTripletaMostrar.getC();
+                    if (filasVirtuales == filaCeldaMostrar) {
+                        if (columnasVirtuales == columnaCeldaMostrar) {
+                            Object valorCeldaMostrar = posibleTripletaMostrar.getV();
+                            if (valorCeldaMostrar != null) {
+                                cadena.append(valorCeldaMostrar + "\t");
                             } else {
-                                System.out.print("0\t");
+                                cadena.append("0\t");
                             }
+                            posicionArreglo++;
+                        } else {
+                            cadena.append("0\t");
                         }
                     } else {
-                        System.out.print("0\t");
+                        cadena.append("0\t");
                     }
                 } else {
-                    System.out.print("0\t");
+                    cadena.append("0\t");
                 }
             }
-            System.out.println("");
+            cadena.append("\n");
         }
-    }
 
+        return cadena.toString();
+    }
 }
