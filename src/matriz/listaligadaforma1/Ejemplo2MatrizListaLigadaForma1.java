@@ -43,7 +43,7 @@ public class Ejemplo2MatrizListaLigadaForma1 {
         // Creo el objeto matriz
         MatrizEnListaLigadaForma1 matriz = new MatrizEnListaLigadaForma1(f, c);
 
-        matriz.mostrarMatrizEnTripletaPorPantallaTexto();
+        System.out.println(matriz);
 
     }
 }

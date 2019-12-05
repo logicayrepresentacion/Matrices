@@ -32,7 +32,7 @@ import matriz.util.MatrizTexto;
  *
  * @author Alejandro Escobar
  */
-public class EjemploMatrizListaLigadaForma1 {
+public class Ejemplo3MatrizListaLigadaForma1 {
 
     private static Scanner sc;
 
@@ -48,14 +48,12 @@ public class EjemploMatrizListaLigadaForma1 {
         MatrizEnListaLigadaForma1 matriz = new MatrizEnListaLigadaForma1(f, c);
         Tripleta t;
         while ((t = MatrizTexto.ingresarTripletaPorPantalla()) != null) {
-            matriz.insertar(t);
+            matriz.setCelda(t);
         }
 
         mostrarMatriz(matriz);
 
     }
-
-
 
     private static Tripleta ingresarTripletaPorArchivo(String fileName) throws FileNotFoundException {
         System.out.println("Abriendo el archivo");
@@ -85,7 +83,7 @@ public class EjemploMatrizListaLigadaForma1 {
     }
 
     private static void mostrarMatriz(MatrizEnListaLigadaForma1 matriz) {
-        matriz.mostrarMatrizEnTripletaPorPantallaTexto();
+        System.out.println(matriz);
     }
 
     public static MatrizEnListaLigadaForma1 crearMatrizDesdeArchivo(String fname) throws FileNotFoundException {
@@ -103,7 +101,7 @@ public class EjemploMatrizListaLigadaForma1 {
                 int c = j + 1;
                 int v = Integer.parseInt("" + lineaFila.charAt(j));
                 if (v == 0) {
-                    mellf.insertar(new Tripleta(f, c, v));
+                    mellf.setCelda(new Tripleta(f, c, v));
                 }
             }
         }

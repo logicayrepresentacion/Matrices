@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Carlos Alejandro Escobar Marulanda ealejandro101@gmail.com
+ * Copyright 2019 Carlos Alejandro Escobar Marulanda
  * Permission is hereby granted, free of charge, to any person 
  * obtaining a copy of this software and associated documentation 
  * files (the "Software"), to deal in the Software without 
@@ -20,18 +20,20 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
  * OTHER DEALINGS IN THE SOFTWARE.
  */
-package matriz.tripleta;
+package matriz.listaligadaforma1;
 
-public class EjemploMatrizDispersa {
+/**
+ *
+ * @author Usuario
+ */
+public class Ejemplo1MatrizListaLigadaForma1 {
 
-    /**
-     *
-     * @param args
-     */
     public static void main(String[] args) {
-        System.out.println("Programa para manejo de matriz en memoria");
-        MatrizEnTripleta miMatriz = MatrizEnTripleta.contruirMatrizEnTripletaDesdePantalla();
-        System.out.println(miMatriz);
+        MatrizEnListaLigadaForma1 matriz = new MatrizEnListaLigadaForma1(6, 6);
+        matriz.setCelda(5, 4, 10);
+        matriz.setCelda(3, 3, 2);
+        matriz.setCelda(5, 4, 25);
+        matriz.setCelda(6, 6, 65);
+        System.out.println(matriz);
     }
-
 }
