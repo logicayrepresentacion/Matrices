@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Carlos Alejandro Escobar Marulanda ealejandro101@gmail.com
+ * Copyright 2019 Carlos Alejandro Escobar Marulanda
  * Permission is hereby granted, free of charge, to any person 
  * obtaining a copy of this software and associated documentation 
  * files (the "Software"), to deal in the Software without 
@@ -22,13 +22,34 @@
  */
 package matriz.listaligadaforma2;
 
-public class Ejemplo2MatrizListaLigadaForma2 {
+import java.util.Scanner;
+import matriz.util.MatrizTexto;
+import matriz.util.Tripleta;
 
-    /**
-     * @param args the command line arguments
-     */
+/**
+ *
+ * @author Usuario
+ */
+public class Ejemplo3MatrizListaLigadaForma2 {
+
+    private static Scanner sc;
+
     public static void main(String[] args) {
-        MatrizEnListaLigadaForma2 forma2 = MatrizEnListaLigadaForma2.entregarMatrizRelacion();
-        System.out.println(forma2);
+        sc = new Scanner(System.in);
+
+        System.out.println("Ingrese las filas:");
+        int f = sc.nextInt();
+        System.out.println("Ingrese las columnas:");
+        int c = sc.nextInt();
+
+        // Creo el objeto matriz
+        MatrizEnListaLigadaForma2 matriz = new MatrizEnListaLigadaForma2(f, c);
+
+        Tripleta t;
+        while ((t = MatrizTexto.ingresarTripletaPorPantalla()) != null) {
+            matriz.setCelda(t);
+        }
+
+        System.out.println(matriz);
     }
 }

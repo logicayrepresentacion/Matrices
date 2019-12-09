@@ -30,6 +30,12 @@ public class MatrizEnListaLigadaForma2 {
 
     NodoDoble nodoConfiguracion; // en el libro se llama mat
 
+    /**
+     * Constructor de la matriz sin elementos
+     *
+     * @param numeroFilas cantidad de filas de la matriz
+     * @param numeroColumnas cantidad de columnas de la matriz
+     */
     public MatrizEnListaLigadaForma2(int numeroFilas, int numeroColumnas) {
         construirNodosCabeza(numeroFilas, numeroColumnas);
     }
@@ -63,9 +69,9 @@ public class MatrizEnListaLigadaForma2 {
      * @param columna columnas donde se encuentra el dato
      * @param valor valor
      */
-    public void insertar(int fila, int columna, int valor) {
+    public void setCelda(int fila, int columna, double valor) {
         Tripleta nuevoTripletaRegistro = new Tripleta(fila, columna, valor);
-        insertar(nuevoTripletaRegistro);
+        setCelda(nuevoTripletaRegistro);
     }
 
     /**
@@ -74,7 +80,7 @@ public class MatrizEnListaLigadaForma2 {
      *
      * @param t
      */
-    public void insertar(Tripleta t) {
+    public void setCelda(Tripleta t) {
         NodoDoble nuevoNodo = new NodoDoble(t);
         conectarFilas(nuevoNodo);
         conectarColumnas(nuevoNodo);
@@ -93,23 +99,42 @@ public class MatrizEnListaLigadaForma2 {
         int columnaNuevoNodo = nuevoNodo.getT().getC();
 
         // nodos para el recorrido
-        NodoDoble cabeza = getCabeza();
+        NodoDoble cabeza = this.getCabeza();
         NodoDoble ultimo = cabeza;
         NodoDoble nodoRecorrido = cabeza.getLigaF();
 
+        boolean siDebeInsertar = true;
+
         // Permite posicionar el nodoRecorrido en la fila correcta para ingresar 
-        while (nodoRecorrido != cabeza && nodoRecorrido.getT().getF() < filaNuevoNodo) {
-            ultimo = nodoRecorrido;
-            nodoRecorrido = nodoRecorrido.getLigaF();
+        while (nodoRecorrido != null && nodoRecorrido != cabeza) {
+            if (nodoRecorrido.getT().getF() < filaNuevoNodo) {
+                ultimo = nodoRecorrido;
+                nodoRecorrido = nodoRecorrido.getLigaF();
+            } else {
+                break;
+            }
         }
 
-        while (nodoRecorrido != cabeza && nodoRecorrido.getT().getF() == filaNuevoNodo && nodoRecorrido.getT().getC() < columnaNuevoNodo) {
-            ultimo = nodoRecorrido;
-            nodoRecorrido = nodoRecorrido.getLigaF();
+        while (nodoRecorrido != null && nodoRecorrido != cabeza) {
+            if (nodoRecorrido.getT().getF() == filaNuevoNodo) {
+                if (nodoRecorrido.getT().getC() < columnaNuevoNodo) {
+                    ultimo = nodoRecorrido;
+                    nodoRecorrido = nodoRecorrido.getLigaF();
+                } else if (nodoRecorrido.getT().getC() == columnaNuevoNodo) {
+                    siDebeInsertar = false;
+                    nodoRecorrido.getT().setV(nuevoNodo.getT().getV());
+                    break;
+                } else {
+                    break;
+                }
+            } else {
+                break;
+            }
         }
-
-        ultimo.setLigaF(nuevoNodo);
-        nuevoNodo.setLigaF(nodoRecorrido);
+        if (siDebeInsertar) {
+            ultimo.setLigaF(nuevoNodo);
+            nuevoNodo.setLigaF(nodoRecorrido);
+        }
     }
 
     /**
@@ -119,27 +144,46 @@ public class MatrizEnListaLigadaForma2 {
      */
     private void conectarColumnas(NodoDoble nuevoNodo) {
         // datos para la comparación
-        int fNuevoNodo = nuevoNodo.getT().getF();
-        int cNuevoNodo = nuevoNodo.getT().getC();
+        int filaNuevoNodo = nuevoNodo.getT().getF();
+        int columnaNuevoNodo = nuevoNodo.getT().getC();
 
         // nodos para el recorrido
         NodoDoble cabeza = getCabeza();
         NodoDoble ultimo = cabeza;
-        NodoDoble r = cabeza.getLigaC();
+        NodoDoble nodoRecorrido = cabeza.getLigaC();
 
-        while (r != cabeza && r.getT().getC() < cNuevoNodo) {
-            ultimo = r;
-            r = r.getLigaC();
+        boolean siDebeInsertar = true;
+
+        while (nodoRecorrido != null && nodoRecorrido != cabeza) {
+            if (nodoRecorrido.getT().getC() < columnaNuevoNodo) {
+                ultimo = nodoRecorrido;
+                nodoRecorrido = nodoRecorrido.getLigaC();
+            } else {
+                break;
+            }
         }
 
-        while (r != cabeza && r.getT().getC() == cNuevoNodo && r.getT().getF() < fNuevoNodo) {
-            ultimo = r;
-            r = r.getLigaC();
+        while (nodoRecorrido != null && nodoRecorrido != cabeza) {
+            if (nodoRecorrido.getT().getC() == columnaNuevoNodo) {
+                if (nodoRecorrido.getT().getF() < filaNuevoNodo) {
+                    ultimo = nodoRecorrido;
+                    nodoRecorrido = nodoRecorrido.getLigaC();
+                } else if (nodoRecorrido.getT().getF() == filaNuevoNodo) {
+                    siDebeInsertar = false;
+                    nodoRecorrido.getT().setV(nuevoNodo.getT().getV());
+                    break;
+                } else {
+                    break;
+                }
+            } else {
+                break;
+            }
         }
 
-        ultimo.setLigaC(nuevoNodo);
-        nuevoNodo.setLigaC(r);
-
+        if (siDebeInsertar) {
+            ultimo.setLigaC(nuevoNodo);
+            nuevoNodo.setLigaC(nodoRecorrido);
+        }
     }
 
     private NodoDoble getCabeza() {
@@ -166,7 +210,7 @@ public class MatrizEnListaLigadaForma2 {
                 case '0':
                     int v = Integer.parseInt(x + "");
                     if (v != 0) {
-                        matrizEnListaLigadaForma2.insertar(new Tripleta(i, j, v));
+                        matrizEnListaLigadaForma2.setCelda(new Tripleta(i, j, v));
                     }
                     j++;
                     break;
@@ -178,23 +222,25 @@ public class MatrizEnListaLigadaForma2 {
         return matrizEnListaLigadaForma2;
     }
 
-    void mostrarMatrizEnTripletaPorPantallaTexto() {
+    @Override
+    public String toString() {
+        StringBuilder cadena = new StringBuilder();
         // Obtengo la configuración de la matriz, fr y cr y la cantidadValores
         Tripleta configuracion = nodoConfiguracion.getT();
         int fr = configuracion.getF();
         int cr = configuracion.getC();
         // Imprimir una línea con encabezado de las columnas
-        System.out.print("\t");
+        cadena.append("\t");
         for (int i = 1; i <= cr; i++) {
-            System.out.print(i + "\t");
+            cadena.append(i + "\t");
         }
-        System.out.println("");
+        cadena.append("\n");
 
         NodoDoble nodoCabeza = nodoConfiguracion.getLigaF();
         NodoDoble nodoRecorrido = nodoCabeza.getLigaF();
         // Recorrido por una matriz virtual m x n
         for (int fv = 1; fv <= fr; fv++) {
-            System.out.print(fv + "\t");
+            cadena.append(fv + "\t");
             for (int cv = 1; cv <= cr; cv++) {
                 if (nodoRecorrido != null && nodoRecorrido != nodoCabeza) {
                     Tripleta triMo = nodoRecorrido.getT();
@@ -202,28 +248,28 @@ public class MatrizEnListaLigadaForma2 {
                     int ct = triMo.getC();
                     if (fv == ft) {
                         if (cv < ct) {
-                            System.out.print("0\t");
+                            cadena.append("0\t");
                         } else if (cv == ct) {
                             Object vt = triMo.getV();
                             if (vt != null) {
-                                System.out.print(vt + "\t");
+                                cadena.append(vt + "\t");
                             } else {
-                                System.out.print("ERROR x COLUMNAS!!!!");
+                                cadena.append("ERROR x COLUMNAS!!!!");
                             }
                             nodoRecorrido = nodoRecorrido.getLigaF();
                         } else {
-                            System.out.print("ERROR x COLUMNAS se paso!!!!");
+                            cadena.append("ERROR x COLUMNAS se paso!!!!");
                         }
                     } else {
-                        System.out.print("0\t");
+                        cadena.append("0\t");
                     }
                 } else {
-                    System.out.print("0\t");
+                    cadena.append("0\t");
                 }
             }
-            System.out.println("");
+            cadena.append("\n");
         }
-
+        return cadena.toString();
     }
 
 }

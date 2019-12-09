@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Carlos Alejandro Escobar Marulanda ealejandro101@gmail.com
+ * Copyright 2019 Carlos Alejandro Escobar Marulanda
  * Permission is hereby granted, free of charge, to any person 
  * obtaining a copy of this software and associated documentation 
  * files (the "Software"), to deal in the Software without 
@@ -23,14 +23,19 @@
 package matriz.listaligadaforma2;
 
 
+
+/**
+ *
+ * @author Usuario
+ */
 public class Ejemplo1MatrizListaLigadaForma2 {
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
-        MatrizEnListaLigadaForma2 forma2 = MatrizEnListaLigadaForma2.entregarMatrizRelacion();
-        forma2.mostrarMatrizEnTripletaPorPantallaTexto();
+        MatrizEnListaLigadaForma2 matriz = new MatrizEnListaLigadaForma2(6, 6);
+        matriz.setCelda(5, 4, 10);
+        matriz.setCelda(3, 3, 2);
+        matriz.setCelda(5, 4, 25);
+        matriz.setCelda(6, 6, 65);
+        System.out.println(matriz);
     }
-    
 }
