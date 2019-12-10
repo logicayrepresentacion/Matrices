@@ -20,44 +20,18 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
  * OTHER DEALINGS IN THE SOFTWARE.
  */
-package matriz.arreglos;
+package matriz.arreglobidimensional;
 
 /**
  *
  * @author Usuario
  */
-public class MatrizEnArreglos {
+public class Ejemplo1MatrizEnArreglo {
 
-    private final double[][] matriz;
-
-    public MatrizEnArreglos(double[][] matriz) {
-        this.matriz = matriz;
+    public static void main(String[] args) {
+        MatrizEnArregloBidimensional matriz = new MatrizEnArregloBidimensional(10, 10);
+        matriz.setCelda(0, 0, 5);
+        matriz.setCelda(5, 7, 2);
+        System.out.println(matriz);
     }
-
-    public MatrizEnArreglos(int filas, int columnas) {
-        matriz = new double[filas][columnas];
-    }
-
-    public double getCelda(int f, int c) {
-        return matriz[f][c];
-    }
-
-    public void setCelda(int i, int j, double d) {
-        matriz[i][j] = d;
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder cadena = new StringBuilder();
-        for (int i = 0; i < matriz.length; i++) {
-            double[] fila = matriz[i];
-            for (int j = 0; j < fila.length; j++) {
-                double d = fila[j];
-                System.out.print(" " + d  + " ");
-            }
-            System.out.println("");
-        }
-        return cadena.toString();
-    }
-
 }

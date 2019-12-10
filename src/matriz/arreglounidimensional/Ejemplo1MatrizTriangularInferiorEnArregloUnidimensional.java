@@ -20,18 +20,20 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
  * OTHER DEALINGS IN THE SOFTWARE.
  */
-package matriz.arreglos;
+package matriz.arreglounidimensional;
 
 /**
  *
  * @author Usuario
  */
-public class Ejemplo1MatrizEnArreglo {
+public class Ejemplo1MatrizTriangularInferiorEnArregloUnidimensional {
 
-    public static void main(String[] args) {
-        MatrizEnArreglos matriz = new MatrizEnArreglos(10, 10);
-        matriz.setCelda(0, 0, 5);
-        matriz.setCelda(5, 7, 2);
+    public static void main(String[] args) throws Exception {
+        MatrizTriangularInferiorEnArregloUnidimensional matriz = new MatrizTriangularInferiorEnArregloUnidimensional(6, 6);
+        matriz.setCelda(5, 4, 10);
+        matriz.setCelda(3, 3, 2);
+        matriz.setCelda(5, 4, 25);
+        matriz.setCelda(6, 6, 65);
         System.out.println(matriz);
     }
 }
