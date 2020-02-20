@@ -42,9 +42,30 @@ public class MatrizEnTripleta {
         tripletas[0] = configuracion;
     }
 
-    public void setCelda(int filaDestino, int columnaDestino, double datoDestino) {
-        // ToDo - Asumo que i y j estan dentro de los limites permitos
+    /**
+     * Fijar un valor diferente de Cero en una celda
+     *
+     * @param filaDestino
+     * @param columnaDestino
+     * @param datoDestino
+     * @throws java.lang.Exception
+     */
+    public void setCelda(int filaDestino, int columnaDestino, double datoDestino) throws Exception {
         Tripleta configuracion = tripletas[0];
+
+        /**
+         * Valido limites
+         */
+        int filas = configuracion.getF();
+        int columnas = configuracion.getC();
+
+        if (filas <= filaDestino || columnas <= columnaDestino) {
+            throw new Exception("Esta fuera de los limites de la matriz");
+        }
+
+        /**
+         * Fijamos el valor
+         */
         int cantidadDatos = (int) configuracion.getV();
         Tripleta celdaDestino = null;
         int posicionInsertar = cantidadDatos + 1;
@@ -87,7 +108,6 @@ public class MatrizEnTripleta {
         } else {
             celdaDestino.setV(datoDestino);
         }
-
     }
 
     /**
@@ -150,19 +170,12 @@ public class MatrizEnTripleta {
         int cantidadFilasMatriz = configuracion.getF();
         int cantidadColumnasMatriz = configuracion.getC();
         int valoresDiferentesCero = (Integer) configuracion.getV();
-        // Imprimir una línea con encabezado de las columnas
-        cadena.append("\t");
-        for (int i = 1; i <= cantidadColumnasMatriz; i++) {
-            cadena.append(i + "\t");
-        }
 
-        cadena.append("\n");
         int posicionArreglo = 1;
 
         // Recorrido por una matriz virtual m x n
-        for (int filasVirtuales = 1; filasVirtuales <= cantidadFilasMatriz; filasVirtuales++) {
-            cadena.append(filasVirtuales + "\t");
-            for (int columnasVirtuales = 1; columnasVirtuales <= cantidadColumnasMatriz; columnasVirtuales++) {
+        for (int filasVirtuales = 0; filasVirtuales < cantidadFilasMatriz; filasVirtuales++) {
+            for (int columnasVirtuales = 0; columnasVirtuales < cantidadColumnasMatriz; columnasVirtuales++) {
                 if (posicionArreglo <= valoresDiferentesCero) {
                     // Estoy en una posicion valida en el arreglo
                     Tripleta posibleTripletaMostrar = tripletas[posicionArreglo];
@@ -172,19 +185,19 @@ public class MatrizEnTripleta {
                         if (columnasVirtuales == columnaCeldaMostrar) {
                             Object valorCeldaMostrar = posibleTripletaMostrar.getV();
                             if (valorCeldaMostrar != null) {
-                                cadena.append(valorCeldaMostrar + "\t");
+                                cadena.append(" " + valorCeldaMostrar + " ");
                             } else {
-                                cadena.append("0\t");
+                                cadena.append(" 0.0 ");
                             }
                             posicionArreglo++;
                         } else {
-                            cadena.append("0\t");
+                            cadena.append(" 0.0 ");
                         }
                     } else {
-                        cadena.append("0\t");
+                        cadena.append(" 0.0 ");
                     }
                 } else {
-                    cadena.append("0\t");
+                    cadena.append(" 0.0 ");
                 }
             }
             cadena.append("\n");

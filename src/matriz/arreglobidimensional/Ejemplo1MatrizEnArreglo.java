@@ -28,7 +28,7 @@ package matriz.arreglobidimensional;
  */
 public class Ejemplo1MatrizEnArreglo {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         MatrizEnArregloBidimensional matriz = new MatrizEnArregloBidimensional(10, 10);
         matriz.setCelda(0, 0, 5);
         matriz.setCelda(5, 7, 2);

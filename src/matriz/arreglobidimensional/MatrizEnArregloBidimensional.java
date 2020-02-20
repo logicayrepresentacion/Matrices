@@ -42,7 +42,14 @@ public class MatrizEnArregloBidimensional {
         return matriz[f][c];
     }
 
-    public void setCelda(int i, int j, double d) {
+    public void setCelda(int i, int j, double d) throws Exception {
+        int filas = matriz.length;
+        int columnas = matriz[0].length;
+
+        if (filas < i || columnas < j) {
+            throw new Exception("Esta fuera de los limites de la matriz");
+        }
+
         matriz[i][j] = d;
     }
 
@@ -53,9 +60,9 @@ public class MatrizEnArregloBidimensional {
             double[] fila = matriz[i];
             for (int j = 0; j < fila.length; j++) {
                 double d = fila[j];
-                System.out.print(" " + d  + " ");
+                cadena.append(" " + d + " ");
             }
-            System.out.println("");
+            cadena.append("\n");
         }
         return cadena.toString();
     }

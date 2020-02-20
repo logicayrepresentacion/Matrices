@@ -22,7 +22,7 @@
  */
 package matriz.listaligadaforma2;
 
-import static matriz.Matriz.MATRIZTEXTO;
+import static matriz.util.Matriz.MATRIZTEXTO;
 import matriz.util.NodoDoble;
 import matriz.util.Tripleta;
 

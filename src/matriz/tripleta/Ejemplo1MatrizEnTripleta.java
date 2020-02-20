@@ -28,12 +28,10 @@ package matriz.tripleta;
  */
 public class Ejemplo1MatrizEnTripleta {
 
-    public static void main(String[] args) {
-        MatrizEnTripleta matriz = new MatrizEnTripleta(6, 6);
-        matriz.setCelda(5, 4, 10);
-        matriz.setCelda(3, 3, 2);
-        matriz.setCelda(5, 4, 25);
-        matriz.setCelda(6, 6, 65);
+    public static void main(String[] args) throws Exception {
+        MatrizEnTripleta matriz = new MatrizEnTripleta(10, 10);
+        matriz.setCelda(0, 0, 5);
+        matriz.setCelda(5, 7, 2);
         System.out.println(matriz);
     }
 }
