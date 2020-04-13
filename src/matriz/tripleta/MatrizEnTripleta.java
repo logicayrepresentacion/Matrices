@@ -205,4 +205,13 @@ public class MatrizEnTripleta {
 
         return cadena.toString();
     }
+
+    public Tripleta[] getTripletas() {
+        return tripletas;
+    }
+
+    public int getCantidadValores() {
+        return (int) tripletas[0].getV();
+    }
+
 }
