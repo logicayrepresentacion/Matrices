@@ -87,7 +87,42 @@ public class MatrizEnListaLigadaForma2 {
         int c = (Integer) nodoConfiguracion.getT().getV();
         nodoConfiguracion.getT().setV(c++);
     }
+    
+    public double getCelda(int fila, int columna){
+        double valor = 0;
+        NodoDoble nodoCabeza = nodoConfiguracion.getLigaF();
+        NodoDoble nodoRecorrido = nodoCabeza.getLigaF();
+        while(nodoRecorrido != null && nodoRecorrido != nodoCabeza){
+            Tripleta tripletaRecorrido = nodoRecorrido.getT();
+            int f = tripletaRecorrido.getF();
+            
+            if(fila > f){
+                nodoRecorrido = nodoRecorrido.getLigaF();
+            } else if( fila == f){
+                // ya estoy en la fila
+                int c = tripletaRecorrido.getC();
+                if( columna > c){
+                    nodoRecorrido = nodoRecorrido.getLigaF();
+                } else if( columna == c){
+                    valor = (Double) tripletaRecorrido.getV();
+                    return valor;
+                } else {
+                    return valor;
+                }
+            } else {
+                return valor;
+            }
+        }
+        return valor;
+    }
 
+    public void aumentarMatriz( int n){
+        int f = nodoConfiguracion.getT().getF();
+        int c = nodoConfiguracion.getT().getC();
+        nodoConfiguracion.getT().setF( f + n );
+        nodoConfiguracion.getT().setC( c + n );
+    }
+    
     /**
      * Método que ingresa un nodo recorriendo la lista de las filas
      *
