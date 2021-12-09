@@ -65,12 +65,24 @@ public class MatrizEnListaLigadaForma2 {
      * Método para ingresar los datos de un nuevo registro e insertarlos en la
      * matriz
      *
-     * @param fila fila donde se encuentra el dato
-     * @param columna columnas donde se encuentra el dato
+     * @param filaDestino fila donde se encuentra el dato
+     * @param columnaDestino columnas donde se encuentra el dato
      * @param valor valor
      */
-    public void setCelda(int fila, int columna, double valor) {
-        Tripleta nuevoTripletaRegistro = new Tripleta(fila, columna, valor);
+    public void setCelda(int filaDestino, int columnaDestino, double valor) throws Exception {
+        Tripleta configuracion = nodoConfiguracion.getT();
+
+        /**
+         * Valido limites
+         */
+        int filas = configuracion.getF();
+        int columnas = configuracion.getC();
+
+        if (filaDestino <= 0 || filas < filaDestino || columnaDestino <= 0 || columnas < columnaDestino) {
+            throw new Exception("Esta fuera de los limites de la matriz");
+        }
+        
+        Tripleta nuevoTripletaRegistro = new Tripleta(filaDestino, columnaDestino, valor);
         setCelda(nuevoTripletaRegistro);
     }
 

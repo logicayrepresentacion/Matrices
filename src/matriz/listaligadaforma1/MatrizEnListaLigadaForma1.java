@@ -102,12 +102,25 @@ public class MatrizEnListaLigadaForma1 {
      * Método para ingresar los datos de un nuevo registro e insertarlos en la
      * matriz
      *
-     * @param fila fila donde se encuentra el dato
-     * @param columna columnas donde se encuentra el dato
+     * @param filaDestino fila donde se encuentra el dato
+     * @param columnaDestino columnas donde se encuentra el dato
      * @param valor valor
      */
-    public void setCelda(int fila, int columna, double valor) {
-        Tripleta nuevoTripletaRegistro = new Tripleta(fila, columna, valor);
+    public void setCelda(int filaDestino, int columnaDestino, Object valor) throws Exception {
+
+        Tripleta configuracion = nodoCabezaMatriz.getT();
+
+        /**
+         * Valido limites
+         */
+        int filas = configuracion.getF();
+        int columnas = configuracion.getC();
+
+        if (filaDestino <= 0 || filas < filaDestino || columnaDestino <= 0 || columnas < columnaDestino) {
+            throw new Exception("Esta fuera de los limites de la matriz");
+        }
+
+        Tripleta nuevoTripletaRegistro = new Tripleta(filaDestino, columnaDestino, valor);
         setCelda(nuevoTripletaRegistro);
     }
 
@@ -115,12 +128,12 @@ public class MatrizEnListaLigadaForma1 {
      * Método para ingresar los datos de un nuevo registro e insertarlos en la
      * matriz
      *
-     * @param t
+     * @param nuevaTripleta
      */
-    public void setCelda(Tripleta t) {
+    public void setCelda(Tripleta nuevaTripleta) {
 
         // Creo el NodoDoble con los valores a ingresar
-        NodoDoble nuevoNodoRegistro = new NodoDoble(t);
+        NodoDoble nuevoNodoRegistro = new NodoDoble(nuevaTripleta);
 
         // Obtengo un nodo cabeza para recorrer la lista de nodos cabeza
         NodoDoble nodoCabezaDeRecorridoLocalizado = getLigaNodoCabeza(nodoCabezaMatriz);
@@ -129,7 +142,7 @@ public class MatrizEnListaLigadaForma1 {
         // estamos insertando y cuando lo encuentra inserta el registro en la lista
         // de esa fila
         while (nodoCabezaDeRecorridoLocalizado != nodoCabezaMatriz && nodoCabezaDeRecorridoLocalizado != null) {
-            if (nodoCabezaDeRecorridoLocalizado.getT().getF() == t.getF()) {
+            if (nodoCabezaDeRecorridoLocalizado.getT().getF() == nuevaTripleta.getF()) {
                 // Eureka, encontre el Nodo cabeza de la fila
                 conectaPorFilas(nodoCabezaDeRecorridoLocalizado, nuevoNodoRegistro);
                 break;
@@ -143,7 +156,7 @@ public class MatrizEnListaLigadaForma1 {
         // estamos insertando y cuando lo encuentra inserta el registro en la lista
         // por columna
         while (nodoCabezaDeRecorridoLocalizado != nodoCabezaMatriz && nodoCabezaDeRecorridoLocalizado != null) {
-            if (nodoCabezaDeRecorridoLocalizado.getT().getC() == t.getC()) {
+            if (nodoCabezaDeRecorridoLocalizado.getT().getC() == nuevaTripleta.getC()) {
                 conectaPorColumnas(nodoCabezaDeRecorridoLocalizado, nuevoNodoRegistro);
                 break;
             }
@@ -230,19 +243,19 @@ public class MatrizEnListaLigadaForma1 {
         NodoDoble nodoRecorridoCabeza = getLigaNodoCabeza(nodoCabezaMatriz);
 
         // Recorrido por una matriz virtual m x n
-        for (int fv = 1; fv <= cantidadFilasMatriz; fv++) {
-            cadena.append(fv + "\t");
+        for (int filasVirtuales = 1; filasVirtuales <= cantidadFilasMatriz; filasVirtuales++) {
+            cadena.append(filasVirtuales + "\t");
             if (nodoRecorridoCabeza != null && nodoRecorridoCabeza != nodoCabezaMatriz) {
                 NodoDoble nodoRecorridoCeldas = nodoRecorridoCabeza.getLigaF();
-                for (int cv = 1; cv <= cantidadColumnasMatriz; cv++) {
+                for (int columnasVirtuales = 1; columnasVirtuales <= cantidadColumnasMatriz; columnasVirtuales++) {
                     if (nodoRecorridoCeldas != null && nodoRecorridoCeldas != nodoRecorridoCabeza) {
                         Tripleta triMo = nodoRecorridoCeldas.getT();
                         int ft = triMo.getF();
                         int ct = triMo.getC();
-                        if (fv == ft) {
-                            if (cv < ct) {
-                                cadena.append("0\t");
-                            } else if (cv == ct) {
+                        if (filasVirtuales == ft) {
+                            if (columnasVirtuales < ct) {
+                                cadena.append("0.0\t");
+                            } else if (columnasVirtuales == ct) {
                                 Object vt = triMo.getV();
                                 if (vt != null) {
                                     cadena.append(vt + "\t");
@@ -255,7 +268,7 @@ public class MatrizEnListaLigadaForma1 {
                             cadena.append("ERROR x FILAS !!!!");
                         }
                     } else {
-                        cadena.append("0\t");
+                        cadena.append("0.0\t");
                     }
                 }
             }

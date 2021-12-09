@@ -30,7 +30,7 @@ public class Ejemplo1MatrizEnTripleta {
 
     public static void main(String[] args) throws Exception {
         MatrizEnTripleta matriz = new MatrizEnTripleta(10, 10);
-        matriz.setCelda(0, 0, 5);
+        matriz.setCelda(1, 1, 5);
         matriz.setCelda(5, 7, 2);
         System.out.println(matriz);
     }

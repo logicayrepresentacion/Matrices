@@ -23,7 +23,6 @@
 package matriz.tripleta;
 
 import matriz.util.Tripleta;
-import java.util.Scanner;
 
 public class MatrizEnTripleta {
 
@@ -43,14 +42,14 @@ public class MatrizEnTripleta {
     }
 
     /**
-     * Fijar un valor diferente de Cero en una celda
+     * Fijar un valor valido de Cero en una celda
      *
      * @param filaDestino
      * @param columnaDestino
      * @param datoDestino
      * @throws java.lang.Exception
      */
-    public void setCelda(int filaDestino, int columnaDestino, double datoDestino) throws Exception {
+    public void setCelda(int filaDestino, int columnaDestino, Object datoDestino) throws Exception {
         Tripleta configuracion = tripletas[0];
 
         /**
@@ -59,17 +58,17 @@ public class MatrizEnTripleta {
         int filas = configuracion.getF();
         int columnas = configuracion.getC();
 
-        if (filas <= filaDestino || columnas <= columnaDestino) {
+        if (filaDestino <= 0 || filas < filaDestino || columnaDestino <= 0 || columnas < columnaDestino) {
             throw new Exception("Esta fuera de los limites de la matriz");
         }
 
         /**
          * Fijamos el valor
          */
-        int cantidadDatos = (int) configuracion.getV();
+        int cantidadDatosActual = (int) configuracion.getV();
         Tripleta celdaDestino = null;
-        int posicionInsertar = cantidadDatos + 1;
-        for (int r = 1; cantidadDatos >= r; r++) {
+        int posicionInsertar = cantidadDatosActual + 1;
+        for (int r = 1; cantidadDatosActual >= r; r++) {
             Tripleta tripletaRecorrido = tripletas[r];
             int filaRecorrido = tripletaRecorrido.getF();
             if (filaDestino > filaRecorrido) {
@@ -79,22 +78,30 @@ public class MatrizEnTripleta {
                 if (columnaDestino > columnaRecorrido) {
                     // No hago nada  
                 } else if (columnaDestino == columnaRecorrido) {
+                    // La celda esta en el arreglo de tripletas
+                    // Se debe realizar reemplazo del valor
                     celdaDestino = tripletaRecorrido;
                 } else {
                     posicionInsertar = r;
+                    break;
                 }
             } else {
                 posicionInsertar = r;
+                break;
             }
         }
 
         /**
          * Valido si encontre la celda en el arreglo
          */
-        if (celdaDestino == null) {
+        if (celdaDestino != null) {
+            celdaDestino.setV(datoDestino);
+        } else {
+            // Realiza crecimiento dinamico del arreglo de tripletas
+            // Copiando en un nuevo arreglo todas las tripletas
             celdaDestino = new Tripleta(filaDestino, columnaDestino, datoDestino);
-            Tripleta[] nuevasTripletas = new Tripleta[cantidadDatos + 1 + 1];
-            configuracion.setV(cantidadDatos + 1);
+            Tripleta[] nuevasTripletas = new Tripleta[cantidadDatosActual + 1 + 1];
+            configuracion.setV(cantidadDatosActual + 1);
             for (int i = 0; i < nuevasTripletas.length; i++) {
                 if (i < posicionInsertar) {
                     nuevasTripletas[i] = tripletas[i];
@@ -105,57 +112,7 @@ public class MatrizEnTripleta {
                 }
             }
             tripletas = nuevasTripletas;
-        } else {
-            celdaDestino.setV(datoDestino);
         }
-    }
-
-    /**
-     * Esta función permite crear una matriz en tripleta desde datos ingresados
-     * por teclado y pantalla de texto.
-     *
-     * @return
-     */
-    public static MatrizEnTripleta contruirMatrizEnTripletaDesdePantalla() {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Cantidad de Filas ");
-        int m = sc.nextInt();
-        System.out.println("Cantidad de Columnas ");
-        int n = sc.nextInt();
-        MatrizEnTripleta matrizR = new MatrizEnTripleta(m, n);
-        int cantidadValores = 0;
-        for (int i = 1; i <= m; i++) {
-            for (int j = 1; j <= n; j++) {
-                Object v = pedirDatoxPantalla(i, j);
-                if (v != null) {
-                    cantidadValores++;
-                    Tripleta t = new Tripleta(i, j, v);
-                    matrizR.setTripleta(cantidadValores, t);
-                }
-            }
-        }
-
-        Tripleta configuracion = new Tripleta(m, n, cantidadValores);
-        matrizR.setTripleta(0, configuracion);
-        return matrizR;
-    }
-
-    /**
-     * Para pedir datos por pantalla, ejemplos de matriz de numeros incluyendo
-     * los reales
-     *
-     * @param i
-     * @param j
-     * @return
-     */
-    private static Object pedirDatoxPantalla(int i, int j) {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Ingrese el dato o numero de la fila:" + i + " columna: " + j);
-        Double dato = Double.parseDouble(sc.nextLine());
-        if (dato == 0) {
-            return null;
-        }
-        return dato;
     }
 
     public void setTripleta(int cv, Tripleta t) {
@@ -173,9 +130,15 @@ public class MatrizEnTripleta {
 
         int posicionArreglo = 1;
 
+        cadena.append("\t");
+        for (int columnasVirtuales = 1; columnasVirtuales <= cantidadColumnasMatriz; columnasVirtuales++) {
+            cadena.append(columnasVirtuales + "\t");
+        }
+        cadena.append("\n");
         // Recorrido por una matriz virtual m x n
-        for (int filasVirtuales = 0; filasVirtuales < cantidadFilasMatriz; filasVirtuales++) {
-            for (int columnasVirtuales = 0; columnasVirtuales < cantidadColumnasMatriz; columnasVirtuales++) {
+        for (int filasVirtuales = 1; filasVirtuales <= cantidadFilasMatriz; filasVirtuales++) {
+            cadena.append(" " + filasVirtuales + " \t");
+            for (int columnasVirtuales = 1; columnasVirtuales <= cantidadColumnasMatriz; columnasVirtuales++) {
                 if (posicionArreglo <= valoresDiferentesCero) {
                     // Estoy en una posicion valida en el arreglo
                     Tripleta posibleTripletaMostrar = tripletas[posicionArreglo];
@@ -185,19 +148,19 @@ public class MatrizEnTripleta {
                         if (columnasVirtuales == columnaCeldaMostrar) {
                             Object valorCeldaMostrar = posibleTripletaMostrar.getV();
                             if (valorCeldaMostrar != null) {
-                                cadena.append(" " + valorCeldaMostrar + " ");
+                                cadena.append(valorCeldaMostrar + "\t");
                             } else {
-                                cadena.append(" 0.0 ");
+                                cadena.append("0.0" + "\t");
                             }
                             posicionArreglo++;
                         } else {
-                            cadena.append(" 0.0 ");
+                            cadena.append("0.0" + "\t");
                         }
                     } else {
-                        cadena.append(" 0.0 ");
+                        cadena.append("0.0" + "\t");
                     }
                 } else {
-                    cadena.append(" 0.0 ");
+                    cadena.append("0.0" + "\t");
                 }
             }
             cadena.append("\n");

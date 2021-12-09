@@ -28,7 +28,7 @@ package matriz.listaligadaforma1;
  */
 public class Ejemplo1MatrizListaLigadaForma1 {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         MatrizEnListaLigadaForma1 matriz = new MatrizEnListaLigadaForma1(6, 6);
         matriz.setCelda(5, 4, 10);
         matriz.setCelda(3, 3, 2);
